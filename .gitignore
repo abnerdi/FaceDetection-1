@@ -1,0 +1,15 @@
+*.jpg
+
+*.png
+
+*.jpeg
+
+*.gif
+
+*.pgm
+
+/DB
+
+/EyeDetection
+
+*.pdf
