@@ -1,7 +1,7 @@
 clc;
 
 
-[L, map] = imread('D:\imgmatlab\1.jpg');
+[L, map] = imread('2.jpg');
 LG = rgb2gray(L);
 LB = edge(LG, 'sobel');
 
@@ -9,7 +9,7 @@ LB = edge(LG, 'sobel');
 
 imshow(LB);
 
-rect = slidingwindowfixed(m, n, 92, 112, 100, 100, 40);
+rect = slidingwindowfixed(m, n, 92, 112, 50);
 size(rect, 1)
 
 r = [rect(:,1) rect(:,2) rect(:,3)-rect(:,1) rect(:,4)-rect(:,2)];

@@ -1,19 +1,13 @@
 function size = slidingwindowfixed(width, height, endWidth, ...
-    endHeight, step, scaleStep, minSize)
+    endHeight, minSize)
 % Функция принимает размер окна и шаг прохода. Можно задать шаг
 % масштвбирования. Возвращает матрицу координат скользящего окна.
 
-if nargin < 7
+if nargin < 5
     minSize = 20;
 end
 
-if nargin < 6
-    scaleStep = 10;
-end
-
-if nargin < 5
-    step = 10;
-end
+rate = 8;
 
 size = zeros(1,4);
 
@@ -27,8 +21,11 @@ else
 end
 
 while windowWidth > minSize
-    size = [size; filling(width, height, windowWidth, windowHeight, step)];
-    windowWidth = windowWidth - scaleStep;
+    adaStep = round((1/rate)*windowWidth);
+    adaStep
+    adaScale = round((2/rate)*windowWidth);
+    size = [size; filling(width, height, windowWidth, windowHeight, adaStep)];
+    windowWidth = windowWidth - adaScale;
     windowHeight = newresizeheight(endWidth, endHeight, windowWidth);
 end
 size = size(2:end, :);
