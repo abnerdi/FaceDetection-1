@@ -15,7 +15,5 @@ ISkin = false(size(r));
 
 ISkin = abs(r-m1)<sig1 & abs(g-m2)<sig2;
 
-imshow(ISkin);
-
 end
 

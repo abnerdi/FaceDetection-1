@@ -27,6 +27,8 @@ if nargin < 2
     end
 
 else
+    rect(3) = rect(1) + rect(3);
+    rect(4) = rect(2) + rect(4);
     if rect(1) == 1 && rect(2) == 1
         integral = I(rect(4), rect(3));
     elseif rect(2) == 1

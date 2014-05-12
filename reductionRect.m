@@ -3,7 +3,12 @@ function outRect = reductionRect(inRect, percent)
 % inRect.rect - координаты пр€моугольников лиц.
 % inRect.dist - расто€ни€.
 
-a = struct('dist', num2cell(inRect.dist), 'rect', num2cell(inRect.rect, 2)');
+if length(inRect(1).dist) == 1
+    a = inRect;
+else
+    a = struct('dist', num2cell(inRect.dist), ...
+        'rect', num2cell(inRect.rect, 2)');
+end
 a = nestedSortStruct(a, 'dist');
 
 for i=1:length(a)
@@ -26,4 +31,3 @@ end
 outRect = a;
 
 end
-

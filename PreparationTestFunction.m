@@ -31,7 +31,7 @@ for k=nameFolds
                 case 32
                     out = strcat(fold, strrep(files(i).name, '.jpg', ''), '.txt');
                     fout = fopen(out, 'w+');
-                    fwrite(fout, rect);
+                    fwrite(fout, rect, 'int');
                     fclose(fout);
                     rect
                     break; % переход на след. картинку.
