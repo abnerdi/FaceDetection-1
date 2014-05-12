@@ -1,10 +1,10 @@
 clc;
 
 %% Read Data
-path = 'D:\imgmatlab\DB\orl_faces\s';
-path2 = 'D:\imgmatlab\al\';
+path = 'D:\FaceDetection\DB\orl_faces\s';
+path2 = 'D:\FaceDetection\al\';
 files = dir(strcat(path2, '*.jpg'));
-path3 = 'D:\imgmatlab\al2\';
+path3 = 'D:\FaceDetection\al2\';
 files3 = dir(strcat(path3, '*.jpg'));
 faceNums = [1:40];
 varNums = [1:10];

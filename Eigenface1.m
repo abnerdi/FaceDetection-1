@@ -35,9 +35,10 @@ w = zeros(1, k);
 for j=1:k
   w(j) = u(:, j)'*F;
 end
-imshow(vec2img(M, 92, 112)*255);
+
 Im = zeros(size(I));
 Err = zeros(1, 1366);
+w
 for s=1:k
    Im = Im + u(:,s)*w(s);
    Err(s) = sqrt(sum((F-Im).^2));

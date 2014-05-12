@@ -27,7 +27,7 @@ if nargin < 4
 end
 
 if nargin < 3
-    k = 100;
+    k = 5;
 end
 
 if nargin < 2
