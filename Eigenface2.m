@@ -14,6 +14,9 @@ function face = Eigenface2(image, slideWindowSetting, k, teta, isShow, ...
 % setNum - номер файла с главными компонентами [1,2,3]. Чем больше значение,
 % тем больше изображений в обучении.
 
+PERCENT_SOBEL = 3.4;
+PERCENT_SKIN = 50;
+
 if nargin < 6
     setNum = '';
 end
@@ -34,23 +37,57 @@ if nargin < 2
     slideWindowSetting = [10 50 100];
 end
 
-width = 92;
-height = 112;
+width = 32;
+height = 32;
 
-[imageHeight, imageWidth] = size(image);
+if ndims(image) == 3
+    image_gray = rgb2gray(image);
+else
+    image_gray = image;
+end
+image_gray = LBP(image_gray);
+
+[imageHeight, imageWidth] = size(image_gray);
 
 % Координаты скользщего окна.
 window = slidingwindowfixed(imageWidth, imageHeight, width, height, ...
-    slideWindowSetting(1), slideWindowSetting(2), slideWindowSetting(3));
+    slideWindowSetting(3));
+length(window)
+
 
 % Recognition
-setMat = strcat('EigenfacesSet', num2str(setNum), '.mat');
+setMat = strcat('EigenfacesSetLBP', num2str(setNum), '.mat');
 load(setMat);
+
+II_sobel = integralImage(sobelGrade(image_gray));
+if ndims(image) == 3
+    II_skin = integralImage(skinDetection(image));
+end
+delnum = [];
+rect = cat(2, window(:,1), window(:,2), window(:,3)-window(:,1), ...
+    window(:,4)-window(:,2));
+
+for i=1:size(window, 1)
+    val_Sobel = (integralImage(II_sobel, rect(i,:))/...
+        (rect(i,3)*rect(i,4)))*100;
+    if ndims(image) == 3
+        val_Skin = (integralImage(II_skin, rect(i,:))/...
+            (rect(i,3)*rect(i,4)))*100;
+    else
+        val_Skin = PERCENT_SKIN;
+    end
+    if val_Sobel < PERCENT_SOBEL || val_Skin < PERCENT_SKIN
+        delnum(end+1) = i;
+    end
+end
+window(delnum, :) = [];
+rect(delnum, :) = [];
+length(window)
 
 I = zeros(width*height, size(window, 1), 'uint8');
 
 for i=1:size(window, 1)
-    L = image(window(i,2):window(i,4), window(i,1):window(i,3));
+    L = image_gray(window(i,2):window(i,4), window(i,1):window(i,3));
     L = imresize(L, [height width])';
     I(:,i) = L(:);
 end
@@ -77,8 +114,8 @@ for i=1:size(I,2)
 
     % Вывод изображения на экран.
     if (isShow) && (dist(i) <= teta)
-       %figure;
-       pause(0.001);
+       figure;
+       %pause(0.001);
        Im = Im + M;
        imshow([vec2img(I(:,i), width, height) vec2img(Im, width, height)]);
     end

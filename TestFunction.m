@@ -5,6 +5,7 @@ path = 'D:\FaceDetection\FaceTest\';
 dirs = dir(path);
 nameFolds = {dirs(:).name};
 nameFolds(ismember(nameFolds,{'.','..'})) = [];
+res = [];
 
 for k=nameFolds
     fold = strcat(path, k{:}, '\');
@@ -21,8 +22,15 @@ for k=nameFolds
         if length(rfiles) ~= 0
             fin = fopen(strcat(fold, rfiles(i).name), 'r');
             rect = fread(fin, 'int');
-            rect = reshape(rect, [], 4)
+            rect = reshape(rect, [], 4);
             fclose(fin);
         end
+        
+        res = [res SobelTest(L, rect)];
     end
 end
+
+min(res)
+length(find(res < 4))
+mean(res)
+%sort(res)

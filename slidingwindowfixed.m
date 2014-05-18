@@ -22,7 +22,7 @@ end
 
 while windowWidth > minSize
     adaStep = round((1/rate)*windowWidth);
-    adaStep
+    %adaStep
     adaScale = round((2/rate)*windowWidth);
     size = [size; filling(width, height, windowWidth, windowHeight, adaStep)];
     windowWidth = windowWidth - adaScale;

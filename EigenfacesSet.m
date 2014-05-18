@@ -9,21 +9,28 @@ files3 = dir(strcat(path3, '*.jpg'));
 faceNums = [1:40];
 varNums = [1:10];
 
-G = zeros(10304,size(faceNums,2)*size(varNums, 2), 'uint8');
+%load('ORL_32x32.mat')
+
+width = 32;
+height = 32;
+
+%G = zeros(width*height,size(faceNums,2)*size(varNums, 2), 'uint8');
+G = zeros(width*height, size(fea,1), 'uint8');
 i = 1;
-intImg = zeros(1,400);
-for directory=faceNums
-    for img=varNums
-        L = imread(strcat(path, num2str(directory), '\', num2str(img), '.pgm')).';
-        L = edge(L, 'sobel', (graythresh(L)*.1));
-        II = integralImage(L);
-        intImg(i) = II(end, end);
-        G(:,i) = L(:);
-        i = i + 1;
-    end
+
+for i=1:size(fea, 1)
+    L = LBP(reshape(fea(i, :),[width height])).';
+    G(:, i) = L(:);
 end
 
-sort(intImg, 'descend')
+% for directory=faceNums
+%     for img=varNums
+%         L = imread(strcat(path, num2str(directory), '\', num2str(img), '.pgm')).';
+%         G(:,i) = L(:);
+%         i = i + 1;
+%     end
+% end
+
 
 % for i=1:length(files)
 %     L = imread(strcat(path2, files(i).name))';
@@ -59,4 +66,4 @@ for i=1:size(v,1)
 end
 
 %% Save
-save('EigenfacesSobelSet.mat', 'M', 'u');
+save('EigenfacesSetLBP.mat', 'M', 'u');
